@@ -1,1 +1,28 @@
-/target
+# --- Rust ---
+/target/
+**/*.rs.bk
+
+# --- Cargo ---
+Cargo.lock
+
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- Editor / IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS / misc ---
+Thumbs.db
+
+# --- Logs ---
+*.log
+
+# --- Temporary files ---
+*.tmp
+*.temp
+
