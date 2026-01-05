@@ -1,0 +1,22 @@
+Das kommt auf den Tisch x ist 1;
+Ich bin ja kein Mensch, ich bin ein System "Start";
+
+Das packen wir oben drauf x 4;
+Ich bin ja kein Mensch, ich bin ein System x;
+
+Ist ja nicht mein Bier (x != 0) {
+    Ich bin ja kein Mensch, ich bin ein System "x ist ungleich 0";
+}
+
+Das ist wie mit dem Joghurt (x < 8) {
+    Das packen wir oben drauf x 1;
+    Ich bin ja kein Mensch, ich bin ein System x;
+}
+
+MACHEN WIR MAL NE RUNDE RISIKO {
+    Büro ist Krieg "kaputt";
+} WENN'S KNALLT {
+    Ich bin ja kein Mensch, ich bin ein System "Exception gefangen, weiter geht's";
+}
+
+Ich bin ja kein Mensch, ich bin ein System "Ende";
