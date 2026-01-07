@@ -228,6 +228,16 @@ impl Interpreter {
         let last = self.scopes.last_mut().expect("at least one scope");
         last.insert(name.to_string(), value);
     }
+
+    pub fn get_var(&self, name: &str) -> Option<Value> {
+        for scope in self.scopes.iter().rev() {
+            if let Some(v) = scope.get(name) {
+                return Some(v.clone());
+            }
+        }
+        None
+    }
+
 }
 
 fn is_truthy(v: &Value) -> bool {
