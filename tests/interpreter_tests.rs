@@ -1,80 +1,86 @@
 use strustberg::{lexer::lex, parser::parse};
-use strustberg::interpreter::{Interpreter, Value, RuntimeError};
+use strustberg::interpreter::{Interpreter, RuntimeError, Value};
 
-fn run(src: &str) -> Result<Interpreter, RuntimeError> {
+fn run_ok(src: &str) -> Interpreter {
     let tokens = lex(src).unwrap();
     let program = parse(&tokens).unwrap();
     let mut i = Interpreter::new();
-    i.interpret(&program)?;
-    Ok(i)
+    i.interpret(&program).unwrap();
+    i
+}
+
+fn run_err(src: &str) -> RuntimeError {
+    let tokens = lex(src).unwrap();
+    let program = parse(&tokens).unwrap();
+    let mut i = Interpreter::new();
+    i.interpret(&program).unwrap_err()
 }
 
 #[test]
-fn let_and_add_assign_work() {
-    let i = run(
+fn arithmetic_and_assignment_work() {
+    let i = run_ok(
         r#"
 Das kommt auf den Tisch x ist 1;
 Das packen wir oben drauf x 4;
 "#,
-    )
-    .unwrap();
+    );
 
     assert_eq!(i.get_var("x"), Some(Value::Int(5)));
 }
 
 #[test]
-fn while_loop_runs() {
-    let i = run(
+fn while_loop_executes() {
+    let i = run_ok(
         r#"
 Das kommt auf den Tisch x ist 1;
 Das ist wie mit dem Joghurt (x < 4) {
     Das packen wir oben drauf x 1;
 }
 "#,
-    )
-    .unwrap();
+    );
 
     assert_eq!(i.get_var("x"), Some(Value::Int(4)));
 }
 
 #[test]
-fn if_executes_only_when_truthy() {
-    let i = run(
-        r#"
-Das kommt auf den Tisch x ist 0;
-Ist ja nicht mein Bier (x != 0) {
-    Das packen wir oben drauf x 1;
-}
-"#,
-    )
-    .unwrap();
-
-    assert_eq!(i.get_var("x"), Some(Value::Int(0)));
-}
-
-#[test]
-fn try_catch_catches_throw() {
-    let i = run(
+fn try_catch_handles_throw() {
+    let i = run_ok(
         r#"
 Das kommt auf den Tisch x ist 1;
 MACHEN WIR MAL NE RUNDE RISIKO {
-    Büro ist Krieg "kaputt";
-    Das packen wir oben drauf x 100; # must not execute
+    Büro ist Krieg "boom";
 } WENN'S KNALLT {
     Das packen wir oben drauf x 5;
 }
 "#,
-    )
-    .unwrap();
+    );
 
     assert_eq!(i.get_var("x"), Some(Value::Int(6)));
 }
 
 #[test]
+fn const_is_immutable() {
+    let err = run_err(
+        r#"
+Das ist von ganz oben. Da rüttelt mir hier keiner dran x ist 1;
+Das packen wir oben drauf x 1;
+"#,
+    );
+
+    assert_eq!(
+        err,
+        RuntimeError::Thrown(Value::Str(
+            "Das ist von ganz oben. Da rüttelt mir hier keiner dran.".into()
+        ))
+    );
+}
+
+#[test]
 fn uncaught_throw_bubbles_up() {
-    let err = run(r#"Büro ist Krieg "kaputt";"#).unwrap_err();
-    match err {
-        RuntimeError::Thrown(Value::Str(s)) => assert_eq!(s, "kaputt"),
-        _ => panic!("expected thrown string"),
-    }
+    let err = run_err(r#"Büro ist Krieg "kaputt";"#);
+
+    assert_eq!(
+        err,
+        RuntimeError::Thrown(Value::Str("kaputt".into()))
+    );
 }

@@ -1,6 +1,7 @@
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
     LetKw,
+    ConstLetKw,
     AddKw,
     SubKw,
     PrintKw,
@@ -211,6 +212,7 @@ impl<'a> Lexer<'a> {
             ("MACHEN WIR MAL NE RUNDE RISIKO", Token::TryKw),
             ("WENN'S KNALLT", Token::CatchKw),
             ("Büro ist Krieg", Token::ThrowKw),
+            ("Das ist von ganz oben. Da rüttelt mir hier keiner dran", Token::ConstLetKw),
             // Optional alias for closing brace:
             ("UND DAMIT HAT SICH DAS", Token::RBrace),
         ];

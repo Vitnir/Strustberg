@@ -27,6 +27,7 @@ impl<'a> Parser<'a> {
     fn parse_stmt(&mut self) -> Result<Stmt, String> {
         match self.peek() {
             Token::LetKw => self.parse_let(),
+            Token::ConstLetKw => self.parse_const_let(),
             Token::AddKw => self.parse_add_assign(),
             Token::SubKw => self.parse_sub_assign(),
             Token::PrintKw => self.parse_print(),
@@ -51,6 +52,15 @@ impl<'a> Parser<'a> {
         let value = self.parse_expr_bp(0)?;
         self.expect(Token::Semicolon)?;
         Ok(Stmt::Let { name, value })
+    }
+
+    fn parse_const_let(&mut self) -> Result<Stmt, String> {
+        self.expect(Token::ConstLetKw)?;
+        let name = self.expect_ident()?;
+        self.expect(Token::IsKw)?;
+        let value = self.parse_expr_bp(0)?;
+        self.expect(Token::Semicolon)?;
+        Ok(Stmt::ConstLet { name, value })
     }
 
     fn parse_add_assign(&mut self) -> Result<Stmt, String> {

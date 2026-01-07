@@ -91,6 +91,7 @@ Strustberg is about vibes.
 | Concept    | Example |
 |-----------|---------|
 | Variable  | `Das kommt auf den Tisch x ist 5;` |
+| **Global Constant (immutable)** | `Das ist von ganz oben. Da rüttelt mir hier keiner dran x ist 42;` |
 | Add       | `Das packen wir oben drauf x 1;` |
 | Subtract | `Das ziehen wir ab x 2;` |
 | Print    | `Ich bin ja kein Mensch, ich bin ein System x;` |

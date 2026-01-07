@@ -1,6 +1,8 @@
 #[derive(Debug, Clone)]
 pub enum Stmt {
     Let { name: String, value: Expr },
+    ConstLet { name: String, value: Expr },
+
     AddAssign { name: String, value: Expr },
     SubAssign { name: String, value: Expr },
 
